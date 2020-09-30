@@ -50,6 +50,7 @@ describe("getElementsByClassName", () => {
     it(`should match the results of calling the getElementsByClassName method, htmlStrings index: ${index}`, () => {
       const $rootElement = $(htmlString);
       $("body").append($rootElement);
+
       const result = getElementsByClassName("targetClassName");
       const expectedNodeList = document.getElementsByClassName(
         "targetClassName"
