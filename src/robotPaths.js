@@ -31,36 +31,40 @@ class RobotPaths {
 
   solve() {
     let counter = 0;
-    //console.log(this.board);
     function nextStep(board, row, col, lastrow, lastcol) {
-      board.togglePiece(row, col);
+      board.togglePiece(row, col); //sets the current tile to true
       if (row === lastrow && col === lastcol) {
+        //if the current tile is the last
         counter++;
-        board.togglePiece(row, col);
-        return;
+        board.togglePiece(row, col); //resets to false to allow more paths
+        return; //escapes the loop
       }
-      //
-      for (let i = -1; i <= 1; i++) {
-        if (row + i >= 0 && row + i <= lastrow) {
-          if (board.hasBeenVisited(row + i, col) === false) {
-            //row = row + i;
-            nextStep(board, row + i, col, lastrow, lastcol);
-            //board.togglePiece(row + i, col);
-          }
-          if (i === 0) {
-            for (let j = -1; j <= 1; j++) {
-              if (col + j >= 0 && col + j <= lastcol) {
-                if (board.hasBeenVisited(row, col + j) === false) {
-                  //col = col + j;
-                  nextStep(board, row, col + j, lastrow, lastcol);
-                  //board.togglePiece(row, col + j);
-                }
-              }
-            }
+      // directionY affects row, and moves the robot up and down
+      // -1 = up, 1 = down
+      for (const directionY of [-1, 1]) {
+        if (row + directionY >= 0 && row + directionY <= lastrow) {
+          //checks that the row is within the grid
+          if (board.hasBeenVisited(row + directionY, col) === false) {
+            //if it hasn`t been visited
+            nextStep(board, row + directionY, col, lastrow, lastcol); //call the next step
           }
         }
       }
+      // directionX affects columns and moves the robot left and rdirectionXght
+      // -1 - left, 1 = right
+      for (const directionX of [-1, 1]) {
+        if (col + directionX >= 0 && col + directionX <= lastcol) {
+          //checks that the column is within the grid
+          if (board.hasBeenVisited(row, col + directionX) === false) {
+            // if it hasn`t been visited
+            nextStep(board, row, col + directionX, lastrow, lastcol); //call the next step
+          }
+        }
+      }
+
       board.togglePiece(row, col);
+      /* When all the paths have been taken from the current position, resets it to false
+      so that it can be reused by other paths */
     }
     nextStep(this.board, 0, 0, this.lastrow, this.lastcol);
     return counter;
