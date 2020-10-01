@@ -50,7 +50,7 @@ class RobotPaths {
           }
         }
       }
-      // directionX affects columns and moves the robot left and rdirectionXght
+      // directionX affects columns and moves the robot left and right
       // -1 - left, 1 = right
       for (const directionX of [-1, 1]) {
         if (col + directionX >= 0 && col + directionX <= lastcol) {
